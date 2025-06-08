@@ -1,0 +1,37 @@
+using System;
+using System.Timers;
+
+class Program
+{
+    private static Timer timer;
+    private const double Salary = 60000; // Example annual salary
+    private const int HoursPerWeek = 40;
+    private const int WeeksPerYear = 52;
+    private static DateTime startTime;
+
+    static void Main()
+    {
+        startTime = DateTime.Now;
+
+        timer = new Timer(1000); // 1 second interval
+        timer.Elapsed += DisplayRealTimeEarnings;
+        timer.AutoReset = true;
+        timer.Enabled = true;
+
+        Console.WriteLine("Real-time earnings calculator started...");
+        Console.WriteLine("Press Enter to exit.");
+        Console.ReadLine();
+    }
+
+    private static void DisplayRealTimeEarnings(object source, ElapsedEventArgs e)
+    {
+        double hourlyRate = Salary / (HoursPerWeek * WeeksPerYear);
+        double earningsPerSecond = hourlyRate / 3600;
+        TimeSpan elapsedTime = DateTime.Now - startTime;
+        double totalEarnings = earningsPerSecond * elapsedTime.TotalSeconds;
+
+        Console.Clear();
+        Console.WriteLine($"Elapsed Time: {elapsedTime:hh\\:mm\\:ss}");
+        Console.WriteLine($"Total Earnings: ${totalEarnings:F2}");
+    }
+}
