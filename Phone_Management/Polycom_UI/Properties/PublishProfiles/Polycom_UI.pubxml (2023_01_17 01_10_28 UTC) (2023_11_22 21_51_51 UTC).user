@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword />
+    <_PublishTargetUrl>\\sm-dev-it01\c$\inetpub\wwwroot\Polycom_UI_test</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Polycom_UI.dll">
+      <publishTime>04/04/2016 11:43:54</publishTime>
+    </File>
+    <File Include="bin/Polycom_UI.pdb">
+      <publishTime>03/29/2016 09:59:53</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>02/16/2016 12:10:48</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>02/09/2016 16:30:02</publishTime>
+    </File>
+    <File Include="Content/dataTables.bootstrap.css">
+      <publishTime>03/30/2016 14:36:11</publishTime>
+    </File>
+    <File Include="Content/Style.css">
+      <publishTime>03/30/2016 14:36:11</publishTime>
+    </File>
+    <File Include="images/ajax-loader.gif">
+      <publishTime>03/23/2016 07:50:01</publishTime>
+    </File>
+    <File Include="images/arrow-left.gif">
+      <publishTime>03/23/2016 07:50:01</publishTime>
+    </File>
+    <File Include="images/arrow-right.gif">
+      <publishTime>03/23/2016 07:50:01</publishTime>
+    </File>
+    <File Include="images/body-bg.png">
+      <publishTime>03/23/2016 07:50:01</publishTime>
+    </File>
+    <File Include="index.html">
+      <publishTime>04/04/2016 12:06:42</publishTime>
+    </File>
+    <File Include="PrecompiledApp.config">
+      <publishTime>03/29/2016 10:25:12</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>03/30/2016 14:36:11</publishTime>
+    </File>
+    <File Include="Scripts/coda-slider.1.1.1.js">
+      <publishTime>03/29/2016 10:32:29</publishTime>
+    </File>
+    <File Include="Scripts/coda-slider.1.1.1.pack.js">
+      <publishTime>03/23/2016 07:50:32</publishTime>
+    </File>
+    <File Include="Scripts/dataTables.bootstrap.js">
+      <publishTime>09/03/2014 18:18:26</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.js">
+      <publishTime>02/16/2016 12:09:21</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.2.1.pack.js">
+      <publishTime>03/23/2016 07:50:28</publishTime>
+    </File>
+    <File Include="Scripts/jquery-easing-compatibility.1.2.js">
+      <publishTime>03/23/2016 07:50:28</publishTime>
+    </File>
+    <File Include="Scripts/jquery-easing-compatibility.1.2.pack.js">
+      <publishTime>03/23/2016 07:50:28</publishTime>
+    </File>
+    <File Include="Scripts/jquery-easing.1.2.js">
+      <publishTime>03/23/2016 07:50:28</publishTime>
+    </File>
+    <File Include="Scripts/jquery-easing.1.2.pack.js">
+      <publishTime>03/23/2016 07:50:28</publishTime>
+    </File>
+    <File Include="Scripts/jquery.dataTables.js">
+      <publishTime>03/30/2016 14:36:12</publishTime>
+    </File>
+    <File Include="Scripts/jquery.dataTables.min.js">
+      <publishTime>03/30/2016 14:36:11</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>04/04/2016 11:43:54</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

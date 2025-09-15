@@ -1,0 +1,2 @@
+C:\Users\actho\source\repos\ConsoleApp1\Project1\obj\Debug\Project1.csproj.AssemblyReference.cache
+C:\Users\actho\source\repos\ConsoleApp1\Project1\obj\Debug\Project1.csproj.CoreCompileInputs.cache

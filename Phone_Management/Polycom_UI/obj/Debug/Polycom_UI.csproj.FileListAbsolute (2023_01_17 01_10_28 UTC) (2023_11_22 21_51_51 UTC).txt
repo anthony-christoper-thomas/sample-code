@@ -1,0 +1,5 @@
+C:\Users\Athomas\Documents\Visual Studio 2012\Phone_Management\Polycom_UI\bin\Polycom_UI.dll
+C:\Users\Athomas\Documents\Visual Studio 2012\Phone_Management\Polycom_UI\bin\Polycom_UI.pdb
+C:\Users\Athomas\Documents\Visual Studio 2012\Phone_Management\Polycom_UI\obj\Debug\Polycom_UI.dll
+C:\Users\Athomas\Documents\Visual Studio 2012\Phone_Management\Polycom_UI\obj\Debug\Polycom_UI.pdb
+C:\Users\Athomas\Documents\Visual Studio 2012\Phone_Management\Polycom_UI\obj\Debug\Polycom_UI.csprojResolveAssemblyReference.cache

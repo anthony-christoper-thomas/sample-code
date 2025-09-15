@@ -1,0 +1,114 @@
+﻿@model CarrierApplication1.Models.CarrierView
+
+<h4>Remove Carrier?</h4>
+<hr />
+
+<div class="table">
+    <table class="table table-bordered">
+
+        <tr>
+            <td>
+ 
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CarrierName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CarrierName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Address2)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Address2)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.City)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.City)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.State)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.State)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Zip)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Zip)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Zip2)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Zip2)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Contact)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Contact)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Phone)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Fax)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Fax)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-default" /> |
+                        @Html.ActionLink("Back to List", "Index")
+                    </div>
+                }
+            </td>
+</table>
+</div>

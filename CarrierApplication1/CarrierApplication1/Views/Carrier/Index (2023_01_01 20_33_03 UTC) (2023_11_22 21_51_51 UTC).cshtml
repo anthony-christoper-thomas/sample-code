@@ -1,0 +1,60 @@
+﻿@model IEnumerable<CarrierApplication1.Models.CarrierView>
+
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped table-hover sortable">
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="10">No Record's found.</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr>
+
+                    <th class="bg-primary" data-defaultsign="_19">Carrier Name</th>
+                    <th class="bg-primary" data-firstsort="desc">Address</th>
+                    <th class="bg-primary" data-firstsort="desc">Address 2</th>
+                    <th class="bg-primary" data-defaultsign="AZ">City</th>
+                    <th class="bg-primary" data-defaultsign="AZ">State</th>
+                    <th class="bg-primary" data-defaultsign="AZ">Zip</th>
+                    <th class="bg-primary" data-defaultsign="AZ">Zip 2</th>
+                    <th class="bg-primary" data-defaultsign="AZ">Contact</th>
+                    <th class="bg-primary" data-defaultsign="AZ">Phone</th>
+                    <th class="bg-primary" data-defaultsign="AZ">Fax</th>
+                    <th class="bg-primary" data-defaultsort="disabled">Email</th>
+                    <th>@Html.ActionLink("Create New", "Create")</th>
+
+                </tr>
+            </thead>
+
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.CarrierName</td>
+                    <td>@item.Address</td>
+                    <td>@item.Address2</td>
+                    <td>@item.City</td>
+                    <td>@item.State</td>
+                    <td>@item.Zip</td>
+                    <td>@item.Zip2</td>
+                    <td>@item.Contact</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Fax</td>
+                    <td>@item.Email</td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

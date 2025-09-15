@@ -1,0 +1,386 @@
+﻿<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Provider Network</title>
+
+    <style type="text/css" MEDIA="screen, projection">
+		html { height: 100% }
+		body { height: 100%; margin: 0px; padding: 0px }
+		#map { height: 100% }
+    </style>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="jquery.jqplot.js" ></script>
+    <script type="text/javascript" src="jqplot.pieRenderer.js" ></script>
+	<script type="text/javascript" src="jquery.jqplot.min.js"></script>
+	<script type="text/javascript" src="jqplot.pieRenderer.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />
+	<input id="counter1" type="hidden" name="counter1" value="0">
+	<input id="counter2" type="hidden" name="counter2" value="0">
+	<input id="counter3" type="hidden" name="counter3" value="0">
+
+    <script type="text/javascript">
+        var lastMember;
+        var infowindow;
+        var kmlZoneA;
+        var kmlZoneB;
+
+
+        var membersMarkersArray = [];
+        var circleArray = [];
+        var image = 'blue-dot.png';
+        var map;
+
+        function onloader() {
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = "http://maps.google.com/maps/api/js?key=AIzaSyAJeY_kTqCuwCuGm968rYR6iX7wjp5D3KM&v=3.exp&callback=handleApiReady";
+            document.body.appendChild(script);
+        }
+
+        function toXmlDom(data) {
+            if (typeof data != "string")
+                return data;
+
+            // Convert text to xml dom (IE hack)
+            var xml = new ActiveXObject("Microsoft.XMLDOM");
+            xml.async = false;
+            xml.loadXML(data);
+            return xml;
+        }
+
+        function drawProjectOnMap(map, projectXml) {
+            try {
+                // Read xml elements
+                var address = $(projectXml).find('address').text();
+                var title = $(projectXml).find('title').text();
+                var lat = $(projectXml).find('lat').text();
+                var lon = $(projectXml).find('lon').text();
+                var provider = $(projectXml).find('provider').text();
+                var phase = $(projectXml).find('phase').text();
+                var status = $(projectXml).find('status').text();
+                var members = parseInt($(projectXml).find('members').text());
+
+                // **** DRAW CIRCLE ****
+                // Create marker 
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: new google.maps.LatLng(lat, lon),
+                    icon: 'SNP_2752068_en_v0.png',
+                    title: provider + ' - ' + title
+                });
+
+                // Add circle overlay and bind to marker (radius in metres)
+                var circle = new google.maps.Circle({
+                    map: map,
+                    radius: 40233.6,
+                    fillColor: '#336699',
+                    fillOpacity: .3,
+                    //fillColor: completed == true ? '#AA0000' : '#00AA00',
+                    strokeWeight: 0,
+                    clickable: false
+                });
+                circle.bindTo('center', marker, 'position');
+
+                //add the marker to the array
+                circleArray.push(circle);
+                getProviderArray(phase, status).push(marker);
+                getProviderArray(phase, status).push(circle);
+
+                var content = '<div style="font-size:14px;"><center><b style="font-size:18px">' + title + '</b></center><br/><div class="linkbutton">Phase: ' + phase + '</div><div class="linkbutton">Status: ' + status + '</div><br/><div class="linkbutton"></div></div>';
+
+                google.maps.event.addListener(marker, "click", function () {
+                    if (infowindow) infowindow.close();
+                    infowindow = new google.maps.InfoWindow({ content: content });
+                    infowindow.open(map, marker);
+                });
+            }
+            catch (err) {
+                alert(title + err.Message);
+            }
+        }
+
+        function drawMemberOnMap(map, projectXml) {
+            // Read xml elements
+            var title = $(projectXml).find('address').text();
+			
+            lastMember = title;
+            var lat = $(projectXml).find('lat').text();
+            var lon = $(projectXml).find('lon').text();
+            var npeople = parseInt($(projectXml).find('count').text());
+            var covered = $(projectXml).find('covered').text();
+            var distance = $(projectXml).find('distance').text();
+            var distanceInt = parseInt($(projectXml).find('distance').text());
+            var formattedlatlng = $(projectXml).find('formattedlatlng').text();
+            var color = '#00FF00';
+            var agegroup = $(projectXml).find('agegroup').text();
+            if (distanceInt <= 25) {
+                image = 'green-dot.png';
+                color = '#00FF00';
+                incrementVal($('#counter1'));
+            }
+            else if (distanceInt <= 100) {
+                image = 'yellow-dot.png';
+                color = '#FFFF00';
+                incrementVal($('#counter2'));
+            }
+            else {
+                image = 'blue-dot.png';
+                color = '#FF0000';
+                incrementVal($('#counter3'));
+            }
+
+            if (npeople >= 1) {
+                // **** DRAW CIRCLE ****
+                
+				// Create marker 
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: new google.maps.LatLng(lat, lon),
+                    title: title,
+                    icon: image
+                });
+
+                eval('var paths = [[' + formattedlatlng + ']];');
+
+                var poly = new google.maps.Polygon({
+                    paths: paths,
+                    strokeWeight: 1,
+                    fillColor: color, //'#55FF55',
+                    fillOpacity: 0.1 * npeople,
+                    title: title
+                });
+
+                poly.setMap(map);
+
+                membersMarkersArray.push(marker);
+                membersMarkersArray.push(poly);
+
+                var content = '<div style="font-size:14px;"><span style="font-weight:bolder;font-family: segoe ui, arial, sans-serif;font-size:18px;">' + title + '</span><br/><br/><div class="linkbutton">Age Group: ' + agegroup + '</div><div class="linkbutton">Closest Provider: ' + distanceInt + ' mi</div><div class="linkbutton"><b>Members: ' + npeople + '</b></div></div>';
+
+
+
+                google.maps.event.addListener(marker, "click", function () {
+                    if (infowindow) infowindow.close();
+                    infowindow = new google.maps.InfoWindow({ content: content });
+                    infowindow.open(map, marker);
+                });
+            }
+        }
+
+        function clearMarkers(markersArray) {
+            if (markersArray) {
+                for (i in markersArray) {
+                    markersArray[i].setMap(null);
+                }
+            }
+        }
+
+        function showMarkers(markersArray) {
+            if (markersArray) {
+                for (i in markersArray) {
+                    markersArray[i].setMap(map);
+                }
+            }
+        }
+
+        function updateCircleRadius(circleArray, rad) {
+            if (circleArray) {
+                for (i in circleArray) {
+                    circleArray[i].setRadius(rad);
+                }
+            }
+        }
+
+        function toggleChart(checked) {
+            if (checked) {
+                document.getElementById("chart").style.display = "";
+                $('#chart').show();
+            }
+            else {
+                document.getElementById("chart").style.display = "none";
+                $('#chart').hide();
+            }
+        }
+        function toggleMarkers() {
+
+            if (document.getElementById("displayMembers").checked) {
+                showMarkers(membersMarkersArray);
+            }
+            else {
+                clearMarkers(membersMarkersArray);
+            }
+        }
+
+        function drawPoly(polyPaths, polyTitle, polyColor) {
+            eval('var paths = [[' + formattedlatlng + ']];');
+
+            var poly = new google.maps.Polygon({
+                paths: paths,
+                strokeWeight: 1,
+                fillColor: color, //'#55FF55',
+                fillOpacity: 0.5
+            });
+
+            poly.setMap(map);
+        }
+
+        function centerMap() {
+
+            //alert('centering...');
+
+            //latlngbounds = new google.maps.LatLngBounds(
+
+            //new google.maps.LatLng(32.37872467499532, -92.109375),
+            //new google.maps.LatLng(28.43842605917348, -91.58203125),
+            //new google.maps.LatLng(29.208434956767977, -82.44140625),
+            //new google.maps.LatLng(35.01080257354925, -84.0234375)
+            //new google.maps.LatLng(34.43289001020703, -92.63671875),
+            //new google.maps.LatLng(29.208434956767977, -92.4609375),
+            //new google.maps.LatLng(30.276779655807054, -82.6171875),
+            //new google.maps.LatLng(36.43778306735082, -83.49609375)
+            //new google.maps.LatLng(28.43842605917348, -94.74609375),
+            //new google.maps.LatLng(29.820312156285425, -82.79296875),
+            //new google.maps.LatLng(35.58466059911501, -83.3203125),
+            //new google.maps.LatLng(35.2982402412064, -94.39453125)
+
+            //);
+
+            //latlng.each(function (n) {
+            //	latlngbounds.extend(n);
+            //});
+
+            //alert('added bounds');
+
+            //map.setCenter(latlngbounds.getCenter());
+            //map.fitBounds(latlngbounds);
+            //map.setZoom(4);
+
+            //alert('centered');
+
+        }
+
+        function handleApiReady() {
+
+            // **** CREATE GOOGLE MAP ****
+            //var mapCenter = new google.maps.LatLng(29.4784, -90.3216);
+            //var mapCenter = new google.maps.LatLng(39.8282,-98.5795); //center of united states
+
+            var latlngbounds = new google.maps.LatLngBounds(
+				new google.maps.LatLng(71.388889, -156.479167), //NW bound
+				new google.maps.LatLng(24.544701, -81.810333) //SE bound
+			);
+
+            var mapCenter = latlngbounds.getCenter();
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                'zoom': 4,
+                'center': mapCenter,
+                'mapTypeId': google.maps.MapTypeId.ROADMAP
+            });
+
+            google.maps.event.addListenerOnce(map, 'idle', function () {
+
+                // **** LOAD XML FILE ****
+                $.ajax({
+                    type: "GET",
+                    url: "http://127.0.0.1:8887/Map%20Analysis/Map%20Analysis/data.xml", 							// This won't work on Chrome for local files
+                    dataType: ($.browser.msie) ? "text" : "xml", // IE turns xml data into plain text
+                    success: function (data) {
+                        var xml = toXmlDom(data);
+						
+                        // Draw each project
+                        $(xml).find('facility').each(function () {
+                            drawProjectOnMap(map, this);
+                        });
+
+                        $(xml).find('member').each(function () {
+                            drawMemberOnMap(map, this);
+                        });
+                        mapLoaded();
+                    },
+				   error: function () {
+					alert('error');
+					}
+
+                });
+
+                drawChart();
+
+            });
+
+        }
+
+        function mapLoaded() {
+
+            centerMap();
+            drawChart();
+        }
+
+        function drawChart() {
+
+            var data = [["<=25", parseInt($('#counter1').attr("value"))], ["<=100", parseInt($('#counter2').attr("value"))], [">100", parseInt($('#counter3').attr("value"))]];
+
+            var plot = jQuery.jqplot('chart', [data],
+			{
+			    seriesColors: ["#00FF00", "#FFFF00", "#0000FF"],
+			    seriesDefaults: {
+			        // Make this a pie chart.
+			        renderer: jQuery.jqplot.PieRenderer,
+			        rendererOptions: {
+			            // Put data labels on the pie slices.
+			            // By default, labels show the percentage of the slice.
+			            showDataLabels: true
+			        }
+			    },
+			    legend: { show: true, location: 'e' }
+			});
+        }
+
+        function incrementVal(selector) {
+            var $item = selector;
+            var $curVal = $item.attr("value");
+            $item.attr("value", parseInt($curVal) + 1);
+        }
+
+        $(function () {
+            $("#slider-range-min").slider({
+                range: "min",
+                value: 40233.6, // 25 miles
+                min: 1609.34, // 1 mile
+                max: 160934, // 100 miles
+                slide: function (event, ui) {
+                    $("#radius").val(Math.round(ui.value / 1609.34));
+                    updateCircleRadius(circleArray, ui.value);
+                }
+            });
+            $("#radius").val(Math.round($("#slider-range-min").slider("value") / 1609.34));
+        });
+		  		
+    </script>
+  </head>
+  <body style="font-family: 'segoe ui', arial, sans-serif;" onload="onloader()">
+	<div id="map" style="border:1px solid black;z-index:10"></div>
+    <div style="z-index:100;position:absolute;left:80px;top:30px;border:1px solid black;background-color:white;padding-left:10px;padding-right:10px">
+	<span style="font-family: 'segoe ui', arial, sans-serif;font-size:22px;">Provider Network</span></div>
+    <div style="z-index:100;position:absolute;right:5px;bottom:20px;border:1px solid black;background-color:white;padding-right:15px; width: 325px;">
+    <table width="100%"><tr><td style="width:10px"></td>
+    <td valign="top" style="padding-left:10px">
+    <table width="100%"><tr><td valign="top">
+    <div style="width:300px;"><div id="slider"></div></div>
+	<label for="radius" >Provider Radius</label><p>
+	<input type="text" id="radius" style="border: 0; color: #f6931f; font-weight: bold; width: 25px; " /><label style="border: 0; font-size:12px; width: 25px; ">miles</label><p>
+	<div id="slider-range-min"></div></p>
+    <div style="padding-left:10px;"><input type="checkbox" name="displayMembers" id="displayMembers" checked="checked" onclick="toggleMarkers();">Display Members</div>
+	<br />
+	<div style="padding-left:10px;"><input type="checkbox" name="displayChart" id="displayChart" checked="checked" onclick="toggleChart(this.checked);">Display Chart</div>
+	<br />
+	<div id="chart"></div>
+	</td></tr></table>
+	</td></tr></table>
+  </body>
+</html>

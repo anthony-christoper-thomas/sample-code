@@ -1,0 +1,12 @@
+C:\Users\Anthony\Desktop\Stock\Stock\bin\Debug\Stock.exe
+C:\Users\Anthony\Desktop\Stock\Stock\bin\Debug\Stock.pdb
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Views\StockView.baml
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Views\StockView.g.cs
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\App.g.cs
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock_MarkupCompile.cache
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock.g.resources
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock.Properties.Resources.resources
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock.csproj.GenerateResource.Cache
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock.exe
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock.pdb
+C:\Users\Anthony\Desktop\Stock\Stock\obj\x86\Debug\Stock.csprojResolveAssemblyReference.cache
